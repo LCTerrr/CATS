@@ -9,7 +9,7 @@
     }
 
     .container {
-      background-color: rgba(255, 255, 255, 0.95);
+      background-color: #825B32;
       padding: 40px;
       max-width: 700px;
       margin: 50px auto;
@@ -28,13 +28,15 @@
 
     h2 {
       text-align: center;
-      color: #333;
+      color: white;
+      
     }
 
     label {
       display: block;
       margin-top: 15px;
       font-weight: bold;
+      color: white;
     }
 
     input, textarea {
@@ -59,4 +61,8 @@
 
     button:hover {
       background-color: #357ae8;
+    }
+
+    .form {
+      background-color: orange;
     }
