@@ -1,0 +1,62 @@
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('your-background.jpg'); 
+      background-color: #ccc;
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      max-width: 700px;
+      margin: 50px auto;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      max-width: 150px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #357ae8;
+    }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document Forwarding Form</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="./img/CBAO.png" alt="Company Logo">
+    </div>
+
+    <h2>Document Forwarding Form</h2>
+
+    <form id="forwardingForm" action="https://docs.google.com/forms/d/e/1FAIpQLScCLNB_S0rs97IgzHQOL44wknVB_cCqCbsDUsdKDeOFKt4Dyg/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+
+      <label>Main Receiving</label>
+      <input type="text" name="entry.1795038098" required>
+
+      <label>Job Order Number</label>
+      <input type="text" name="entry.2089563930" required>
+
+      <label>Forwarding Processor</label>
+      <input type="text" name="entry.1269802068" required>
+
+      <label>Forward Date</label>
+      <input type="date" name="entry.968933443" required>
+
+      <label>Source Office / Entity / Client</label>
+      <input type="text" name="entry.92785706" required>
+
+      <label>Forwarded Document Type</label>
+      <input type="text" name="entry.1944266366" required>
+
+      <label>Detail and/or Particulars</label>
+      <textarea name="entry.1105130835" rows="4" required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { window.location.href = 'view-data.html'; }"></iframe>
+<script>
+  var submitted = false;
+</script>
+
+</body>
+</html>

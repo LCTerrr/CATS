@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Submitted Records</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        const query = new google.visualization.Query(
+          'https://docs.google.com/spreadsheets/d/1AuwKB08V9G3ViAjCAFVLToyvC47eBR6e6lQO0WRwdTs/gviz/tq?sheet=Form%20Responses%201&headers=1'
+        );
+        query.send(function(response) {
+          if (response.isError()) {
+            document.getElementById("table_div").innerHTML = "<p style='color:red;'>Error loading data. Please check sheet sharing and name.</p>";
+            console.error('Error:', response.getMessage(), response.getDetailedMessage());
+            return;
+          }
+          const data = response.getDataTable();
+          const table = new google.visualization.Table(document.getElementById('table_div'));
+          table.draw(data, {showRowNumber: true, width: '100%', height: 'auto'});
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h2 style="text-align:center;">📄 Submitted Records from Google Form</h2>
+    <div id="table_div" style="margin: 0 auto; width: 90%;"></div>
+  </body>
+</html>
