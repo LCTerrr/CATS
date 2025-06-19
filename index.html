@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Landing Login Page</title>
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <div>
+        <div class="logo-main">
+            <img src="./img/CBAO.png" alt="Image" style="display: block; margin: 0 auto;" />
+        </div>
+        <div>
+            <h1 style="font-weight: bold;">City Building And Architecture Office</h1>
+        </div>
+        <div class="container" id="loginContainer">
+            <div class="logo">
+                <img src="./img/CBAO2.png" alt="Company Logo">
+            </div>
+        <h2>COLLABORATIVE ACTION TRACKING SYSTEM</h2>
+        <input type="text" id="loginUsername" placeholder="Username" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <div class="toggle" onclick="showRegister()">No account? Register</div>
+        <div class="message" id="loginMsg"></div>
+        </div>
+
+        <div class="container" id="registerContainer" style="display:none;">
+            <h2>Register</h2>
+            <input type="text" id="registerUsername" placeholder="Username" required>
+            <input type="email" id="registerEmail" placeholder="Email (Gmail only)" required>
+            <input type="password" id="registerPassword" placeholder="Password" required>
+            <button onclick="register()">Register</button>
+            <div class="toggle" onclick="showLogin()">Have an account? Login</div>
+            <div class="message" id="registerMsg"></div>
+        </div>
+    </div>
+  <script>
+    function showRegister() {
+      document.getElementById("loginContainer").style.display = "none";
+      document.getElementById("registerContainer").style.display = "block";
+    }
+
+    function showLogin() {
+      document.getElementById("registerContainer").style.display = "none";
+      document.getElementById("loginContainer").style.display = "block";
+    }
+
+    function login() {
+        const user = document.getElementById("loginUsername").value;
+        const pass = document.getElementById("loginPassword").value;
+        const msg = document.getElementById("loginMsg");
+
+    if (user === "admin" && pass === "admin123") {
+        msg.style.color = "green";
+        msg.textContent = "Welcome, Admin!";
+        setTimeout(() => {
+        window.location.href = "forward_form.html";
+        }, 1000);
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const found = users.find(u => u.username === user && u.password === pass);
+
+    if (found) {
+        msg.style.color = "green";
+        msg.textContent = "Login successful!";
+        setTimeout(() => {
+        window.location.href = "forward_form.html";
+        }, 1000);
+    } else {
+        msg.style.color = "red";
+        msg.textContent = "Invalid login!";
+    }
+    }
+
+
+    function register() {
+      const username = document.getElementById("registerUsername").value;
+      const email = document.getElementById("registerEmail").value;
+      const password = document.getElementById("registerPassword").value;
+      const msg = document.getElementById("registerMsg");
+
+      if (!email.endsWith("@gmail.com")) {
+        msg.textContent = "Email must be a Gmail address.";
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users") || "[]");
+      if (users.find(u => u.username === username)) {
+        msg.textContent = "Username already exists!";
+        return;
+      }
+
+      users.push({ username, email, password });
+      localStorage.setItem("users", JSON.stringify(users));
+      msg.style.color = "green";
+      msg.textContent = "Registered successfully!";
+    }
+  </script>
+</body>
+</html>

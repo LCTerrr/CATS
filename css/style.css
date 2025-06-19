@@ -1,6 +1,6 @@
     body {
       font-family: Arial, sans-serif;
-      background-image: url('your-background.jpg'); 
+      background-image: url('../img/CBAO1.jpeg'); 
       background-color: white;
       background-size: cover;
       background-position: center;
@@ -9,7 +9,7 @@
     }
 
     .container {
-      background-color: #825B32;
+      background-color: rgba(49, 49, 49, 0.25);
       padding: 40px;
       max-width: 700px;
       margin: 50px auto;
@@ -23,7 +23,7 @@
     }
 
     .logo img {
-      max-width: 150px;
+      max-width: 250px;
     }
 
     h2 {

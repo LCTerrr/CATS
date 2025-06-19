@@ -1,0 +1,75 @@
+body {
+      font-family: Arial, sans-serif;
+      background-image: url(../img/CBAO1.jpeg);
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    h1 {
+        background-color: rgba(12, 71, 25, 0.4);
+        color: #fff;
+        text-align: center;
+        font-size: 38px;
+        font-weight: bold;
+        padding: 10px;
+        width: 100%;
+        border: 5px ridge #ffffff;
+        border-radius: 20px;
+    }
+    .container {
+        background-color: rgba(49, 49, 49, 0.25);
+        padding: 40px;
+        border-radius: 50px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        width: 700px;
+        padding-left: 80px;
+    }
+    .container h2 {
+        text-align: center;
+        color: white;
+        font-size: 30px;
+    }
+    input {
+        width: 50%;
+        padding: 10px;
+        margin: 13px auto;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: block;
+    }
+
+    button {
+        width: 22%;
+        padding: 10px;
+        display: block;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin: 10px auto 0;
+        cursor: pointer;
+    }
+
+    .toggle {
+      margin-top: 15px;
+      text-align: center;
+      color: #007BFF;
+      cursor: pointer;
+    }
+    .message {
+      margin-top: 10px;
+      text-align: center;
+      color: red;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      max-width: 250px;
+    }
