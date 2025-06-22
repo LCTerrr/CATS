@@ -50,15 +50,15 @@
 
       fetch("https://script.google.com/macros/s/AKfycbzOrQct1w6zzbveaeB5trLLF80Ep4_Q7xIys_wczPti_PObwgcvrWwE5xEPdQu0bGtw/exec", {
         method: "POST",
-        mode: "no-cors",  // Required to bypass CORS when testing locally
+        mode: "no-cors",  // Allow local use
         body: JSON.stringify(jsonData),
         headers: {
           "Content-Type": "application/json"
         }
       })
       .then(() => {
-        alert("Form submitted!");
-        window.location.href = "view-data.html"; // redirect after submit
+        alert("Form submitted successfully!");
+        form.reset();
       })
       .catch((error) => {
         alert("Submission failed.");
