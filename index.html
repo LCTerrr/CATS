@@ -7,35 +7,40 @@
   <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
-    <div>
-        <div class="logo-main">
-            <img src="./img/CBAO.png" alt="Image" style="display: block; margin: 0 auto; width: 150px;" />
-        </div>
-        <div>
-            <h1 style="font-weight: bold;">City Building And Architecture Office</h1>
-        </div>
-        <div class="container" id="loginContainer">
-            <div class="logo">
-                <img src="./img/CBAO2.png" alt="Company Logo">
-            </div>
-        <h2>COLLABORATIVE ACTION TRACKING SYSTEM</h2>
-        <input type="text" id="loginUsername" placeholder="Username" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
-        <button onclick="login()">Login</button>
-        <div class="toggle" onclick="showRegister()">No account? Register</div>
-        <div class="message" id="loginMsg"></div>
-        </div>
-
-        <div class="container" id="registerContainer" style="display:none;">
-            <h2>Register</h2>
-            <input type="text" id="registerUsername" placeholder="Username" required>
-            <input type="email" id="registerEmail" placeholder="Email (Gmail only)" required>
-            <input type="password" id="registerPassword" placeholder="Password" required>
-            <button onclick="register()">Register</button>
-            <div class="toggle" onclick="showLogin()">Have an account? Login</div>
-            <div class="message" id="registerMsg"></div>
-        </div>
+  <div>
+    <div class="logo-main">
+      <img src="./img/CBAO.png" alt="Image" style="display: block; margin: 0 auto; width: 150px;" />
     </div>
+    <div>
+      <h1 style="font-weight: bold;">City Building And Architecture Office</h1>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="container" id="loginContainer">
+      <div class="logo">
+        <img src="./img/CBAO2.png" alt="Company Logo">
+      </div>
+      <h2>COLLABORATIVE ACTION TRACKING SYSTEM</h2>
+      <input type="text" id="loginEmpID" placeholder="Employee ID" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button onclick="login()">Login</button>
+      <div class="toggle" onclick="showRegister()">No account? Register</div>
+      <div class="message" id="loginMsg"></div>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="container" id="registerContainer" style="display:none;">
+      <h2>Register</h2>
+      <input type="text" id="registerFullname" placeholder="Full Name" required>
+      <input type="text" id="registerEmpID" placeholder="Employee ID (10 digits)" required maxlength="10">
+      <input type="email" id="registerEmail" placeholder="Email (Gmail only)" required>
+      <input type="password" id="registerPassword" placeholder="Password" required>
+      <button onclick="register()">Register</button>
+      <div class="toggle" onclick="showLogin()">Have an account? Login</div>
+      <div class="message" id="registerMsg"></div>
+    </div>
+  </div>
+
   <script>
     function showRegister() {
       document.getElementById("loginContainer").style.display = "none";
@@ -48,53 +53,69 @@
     }
 
     function login() {
-        const user = document.getElementById("loginUsername").value;
-        const pass = document.getElementById("loginPassword").value;
-        const msg = document.getElementById("loginMsg");
+      const empID = document.getElementById("loginEmpID").value.trim();
+      const pass = document.getElementById("loginPassword").value;
+      const msg = document.getElementById("loginMsg");
 
-    if (user === "admin" && pass === "admin123") {
+      if (empID === "admin" && pass === "admin123") {
+        localStorage.setItem("loggedInUser", JSON.stringify({ fullname: "Admin" }));
         msg.style.color = "green";
         msg.textContent = "Welcome, Admin!";
         setTimeout(() => {
-        window.location.href = "forward_form.html";
+          window.location.href = "forward_form.html";
         }, 1000);
         return;
-    }
+      }
 
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const found = users.find(u => u.username === user && u.password === pass);
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const found = users.find(u => u.empID === empID && u.password === pass);
 
-    if (found) {
+      if (found) {
+        localStorage.setItem("loggedInUser", JSON.stringify(found));
         msg.style.color = "green";
         msg.textContent = "Login successful!";
         setTimeout(() => {
-        window.location.href = "forward_form.html";
+          window.location.href = "forward_form.html";
         }, 1000);
-    } else {
+      } else {
         msg.style.color = "red";
         msg.textContent = "Invalid login!";
+      }
     }
-    }
-
 
     function register() {
-      const username = document.getElementById("registerUsername").value;
-      const email = document.getElementById("registerEmail").value;
+      const fullname = document.getElementById("registerFullname").value.trim();
+      const empID = document.getElementById("registerEmpID").value.trim();
+      const email = document.getElementById("registerEmail").value.trim();
       const password = document.getElementById("registerPassword").value;
       const msg = document.getElementById("registerMsg");
 
+      if (!fullname || !empID || !email || !password) {
+        msg.style.color = "red";
+        msg.textContent = "All fields are required.";
+        return;
+      }
+
+      if (!/^\d{10}$/.test(empID)) {
+        msg.style.color = "red";
+        msg.textContent = "Employee ID must be exactly 10 digits.";
+        return;
+      }
+
       if (!email.endsWith("@gmail.com")) {
+        msg.style.color = "red";
         msg.textContent = "Email must be a Gmail address.";
         return;
       }
 
       let users = JSON.parse(localStorage.getItem("users") || "[]");
-      if (users.find(u => u.username === username)) {
-        msg.textContent = "Username already exists!";
+      if (users.find(u => u.empID === empID)) {
+        msg.style.color = "red";
+        msg.textContent = "Employee ID already registered!";
         return;
       }
 
-      users.push({ username, email, password });
+      users.push({ fullname, empID, email, password });
       localStorage.setItem("users", JSON.stringify(users));
       msg.style.color = "green";
       msg.textContent = "Registered successfully!";

@@ -4,6 +4,25 @@
   <meta charset="UTF-8">
   <title>Document Forwarding Form</title>
   <link rel="stylesheet" href="./css/forward_form.css">
+  <style>
+    .user-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .user-bar span {
+      font-weight: bold;
+    }
+    .user-bar button {
+      padding: 5px 10px;
+      background-color: #d9534f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -40,6 +59,19 @@
   </div>
 
   <script>
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+      alert("You must log in first.");
+      window.location.href = "index.html";
+    } else {
+      document.getElementById("userGreeting").textContent = "Welcome, " + user.fullname;
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "index.html";
+    }
+
     const form = document.getElementById('forwardingForm');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -50,7 +82,7 @@
 
       fetch("https://script.google.com/macros/s/AKfycbzOrQct1w6zzbveaeB5trLLF80Ep4_Q7xIys_wczPti_PObwgcvrWwE5xEPdQu0bGtw/exec", {
         method: "POST",
-        mode: "no-cors",  // Allow local use
+        mode: "no-cors",
         body: JSON.stringify(jsonData),
         headers: {
           "Content-Type": "application/json"
