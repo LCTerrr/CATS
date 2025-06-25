@@ -29,7 +29,7 @@
     <div class="container" id="registerContainer" style="display:none;">
       <h2>Register</h2>
       <input type="text" id="registerFullname" placeholder="Full Name" required>
-      <input type="text" id="registerEmpID" placeholder="Employee ID (10 digits)" required maxlength="10">
+      <input type="text" id="registerEmpID" placeholder="Employee ID (9 - 10 digits)" required maxlength="10">
       <input type="email" id="registerEmail" placeholder="Email (Gmail only)" required>
       <input type="password" id="registerPassword" placeholder="Password" required>
       <button onclick="register()">Register</button>
@@ -93,7 +93,7 @@
         return;
       }
 
-      if (!/^\d{10}$/.test(empID)) {
+      if (!/^\d{9,10}$/.test(empID)) {
         msg.style.color = "red";
         msg.textContent = "Employee ID must be exactly 10 digits.";
         return;
