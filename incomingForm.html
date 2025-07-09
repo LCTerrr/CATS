@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Document Forwarding Form</title>
-  <link rel="stylesheet" href="../css/forward_form.css">
+  <link rel="stylesheet" href="./css/forward_form.css">
 </head>
 <body>
   <div class="container">
@@ -11,12 +11,11 @@
       <img src="./img/CBAO.png" alt="Company Logo">
     </div>
 
-    <!-- Welcome name -->
     <h3 id="welcomeMsg" style="text-align: center; color: white; font-size: 30px;"></h3>
 
     <h2>COLLABORATIVE ACTION TRACKING SYSTEM - INCOMING</h2>
 
-    <form id="forwardingForm">
+    <form id="incomingForm">
       <label>Main Receiving</label>
       <input type="text" name="mainReceiving" required>
 
@@ -38,7 +37,6 @@
       <label>Detail and/or Particulars</label>
       <textarea name="details" rows="4" required></textarea>
 
-      <!-- Additional Fields (starts after 3 empty rows in Google Sheet) -->
       <label>Referral Facilitator</label>
       <input type="text" name="referralFacilitator">
 
@@ -63,7 +61,6 @@
       <label>Action Category</label>
       <input type="text" name="actionCategory">
 
-      <!-- Space before next section in Google Sheet -->
       <label>Closing Notes</label>
       <textarea name="closingNotes" rows="3"></textarea>
 
@@ -76,13 +73,6 @@
       <label>Filing Code</label>
       <input type="text" name="filingCode">
 
-      <label>Storage Type</label>
-      <select name="storageType" required>
-        <option value="">Select...</option>
-        <option value="Digital">Digital</option>
-        <option value="Paper">Paper</option>
-      </select>
-
       <label>File Status</label>
       <input type="text" name="fileStatus">
 
@@ -92,7 +82,6 @@
   </div>
 
   <script>
-    // Show welcome name from localStorage
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (!user) {
       alert("You must log in first.");
@@ -106,8 +95,7 @@
       window.location.href = "index.html";
     }
 
-    // Handle form submission
-    const form = document.getElementById('forwardingForm');
+    const form = document.getElementById('incomingForm');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
@@ -115,7 +103,7 @@
       const jsonData = {};
       formData.forEach((value, key) => jsonData[key] = value);
 
-      fetch("https://script.google.com/macros/s/AKfycbzEpSVpwZofeCLzsyerBAMxi6f3xAsAr2UlrhQs85uZ2dGK-nix4dh49bDVlvytwFjA/exec", {
+      fetch("https://script.google.com/macros/s/AKfycby1rSC5QnmZdyLT2WPxLERxAH16kypgfMKBM3UoahGFbyl5wVFv_D1rjdyAuKtVDReQ5w/exec", {
         method: "POST",
         mode: "no-cors",
         headers: {
@@ -123,13 +111,14 @@
         },
         body: JSON.stringify(jsonData)
       })
-      .then(response => {
+      .then(() => {
+        // Since response is opaque, assume success
         alert("Form submitted successfully!");
         form.reset();
       })
       .catch(error => {
         alert("Submission failed.");
-        console.error("Error:", error);
+        console.error("Fetch Error:", error);
       });
     });
   </script>
