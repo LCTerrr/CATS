@@ -4,23 +4,54 @@
   <meta charset="UTF-8">
   <title>Document Forwarding Form</title>
   <link rel="stylesheet" href="./css/forward_form.css">
+  <style>
+    @media print {
+      body * { visibility: hidden; }
+      #previewContainer, #previewContainer * { visibility: visible; }
+      #previewContainer { position: absolute; top: 0; left: 0; width: 100%; }
+    }
+    #previewContainer {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
+      background-color: #fffdfd;
+      padding: 20px;
+      border-radius: 8px;
+      color: #000;
+    }
+    #previewContent p { margin: 5px 0; }
+    #previewContainer h3 { margin-top: 0; }
+    #actionButtons {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+    #actionButtons button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #actionButtons button:hover {
+      opacity: 0.9;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <div class="logo">
       <img src="./img/CBAO.png" alt="Company Logo">
     </div>
-
     <h3 id="welcomeMsg" style="text-align: center; color: white; font-size: 30px;"></h3>
-
     <h2>COLLABORATIVE ACTION TRACKING SYSTEM - INCOMING</h2>
-
     <form id="incomingForm">
       <label>Main Receiving</label>
       <input type="text" name="mainReceiving" required>
 
       <label>Job Order Number</label>
-      <input type="text" name="jobOrderNumber" required>
+      <input type="number" name="jobOrderNumber" required>
 
       <label>Forwarding Processor</label>
       <input type="text" name="forwardingProcessor" required>
@@ -55,15 +86,9 @@
       <label>Action Status</label>
       <input type="text" name="actionStatus">
 
-      <label>Action Duration</label>
-      <input type="text" name="actionDuration">
-
-      <label>Action Category</label>
-      <input type="text" name="actionCategory">
-
       <label>Closing Notes</label>
       <textarea name="closingNotes" rows="3"></textarea>
-
+      
       <label>Filing Date</label>
       <input type="date" name="filingDate">
 
@@ -79,8 +104,18 @@
       <button type="submit">Submit</button>
       <button type="button" onclick="logout()" style="margin-top: 10px;">Logout</button>
     </form>
+    <div id="actionButtons">
+      <button onclick="showPreview()">Preview</button>
+      <button onclick="viewSheet()">View Sheet</button>
+      <button onclick="editActionStatus()">Edit Action Status</button>
+    </div>
+    <div id="previewContainer">
+      <h3 style="text-align: center;">Preview</h3>
+      <div id="previewContent"></div>
+      <br>
+      <button onclick="window.print()">Print</button>
+    </div>
   </div>
-
   <script>
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (!user) {
@@ -89,38 +124,70 @@
     } else {
       document.getElementById("welcomeMsg").textContent = "Welcome, " + user.fullname;
     }
-
     function logout() {
       localStorage.removeItem("loggedInUser");
       window.location.href = "index.html";
     }
-
+    let submittedData = {};
     const form = document.getElementById('incomingForm');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-
       const formData = new FormData(form);
-      const jsonData = {};
-      formData.forEach((value, key) => jsonData[key] = value);
-
+      submittedData = {};
+      formData.forEach((value, key) => submittedData[key] = value);
       fetch("https://script.google.com/macros/s/AKfycby1rSC5QnmZdyLT2WPxLERxAH16kypgfMKBM3UoahGFbyl5wVFv_D1rjdyAuKtVDReQ5w/exec", {
         method: "POST",
         mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(jsonData)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(submittedData)
       })
       .then(() => {
-        // Since response is opaque, assume success
         alert("Form submitted successfully!");
         form.reset();
+        document.getElementById('actionButtons').style.display = 'block';
       })
       .catch(error => {
         alert("Submission failed.");
         console.error("Fetch Error:", error);
       });
     });
+    function showPreview() {
+      const previewContainer = document.getElementById('previewContainer');
+      const previewContent = document.getElementById('previewContent');
+      previewContent.innerHTML = Object.entries(submittedData)
+        .map(([key, value]) => `<p><strong>${key.replace(/([A-Z])/g, ' $1')}:</strong> ${value}</p>`)
+        .join("");
+      previewContainer.style.display = 'block';
+    }
+    function viewSheet() {
+      window.open('https://docs.google.com/spreadsheets/d/17YW6zHADVZaYA56Eodg2tB0zOdiyF4Tdd3r858Jmpg8/edit?gid=0#gid=0', '_blank');
+    }
+    function editActionStatus() {
+      const jobOrderNumber = prompt("Enter the Job Order Number to edit Action Status:");
+      const newStatus = prompt("Enter new Action Status:");
+      if (jobOrderNumber && newStatus) {
+        fetch("https://script.google.com/macros/s/AKfycby1rSC5QnmZdyLT2WPxLERxAH16kypgfMKBM3UoahGFbyl5wVFv_D1rjdyAuKtVDReQ5w/exec", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jobOrderNumber, checkExistence: true })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.exists) {
+            fetch("https://script.google.com/macros/s/AKfycby1rSC5QnmZdyLT2WPxLERxAH16kypgfMKBM3UoahGFbyl5wVFv_D1rjdyAuKtVDReQ5w/exec", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ jobOrderNumber, newActionStatus: newStatus, editActionStatus: true })
+            })
+            .then(() => alert("Action Status updated successfully!"))
+            .catch(err => console.error("Update Error:", err));
+          } else {
+            alert("Job Order Number not found in Google Sheet.");
+          }
+        })
+        .catch(err => console.error("Existence Check Error:", err));
+      }
+    }
   </script>
 </body>
 </html>

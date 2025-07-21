@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document Outgoing Form</title>
+  <link rel="stylesheet" href="./css/forward_form.css">
+
+  <style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #previewContainer, #previewContainer * {
+        visibility: visible;
+      }
+      #previewContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+    }
+
+    #previewContainer {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
+      background-color: #fffdfd;
+      padding: 20px;
+      border-radius: 8px;
+      color: #000;
+    }
+
+    #previewContent p {
+      margin: 5px 0;
+    }
+
+    #previewContainer h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="./img/CBAO.png" alt="Company Logo">
+    </div>
+
+    <h3 id="welcomeMsg" style="text-align: center; color: white; font-size: 30px;"></h3>
+    <h2>COLLABORATIVE ACTION TRACKING SYSTEM - OUTGOING</h2>
+
+    <form id="outgoingForm">
+        <label for="">Date of Entry</label>
+        <input type="date" name="dateEntry" required>
+
+        <label for="">Document Date</label>
+        <input type="date" name="documentDate" required>
+
+        <label for="">Dispatching Processor</label>
+        <input type="text" name="dispatchingProcessor" required>
+
+        <label for="">Processing Date</label>
+        <input type="date" name="processingDate" required>
+
+        <label for="">Dispatch Date</label>
+        <input type="date" name="dispatchDate" required>
+        
+        <label for="">Type of Communication</label>
+        <input type="text" name="typeOfCommunitcation" required>
+
+        <label for="">Type of Action Sought</label>
+        <input type="text" name="typeOfActionSought" required>
+
+        <label for="">Details/Particulars</label>
+        <input type="text" name="details" required>
+
+        <label for="">Project In-charge</label>
+        <input type="text" name="projectInCharge" required>
+
+        <label for="">Assigned Liaison Officer</label>
+        <input type="text" name="assignedLaisonOfficer1" required>
+
+        <label for="">Receipient</label>
+        <input type="text" name="receipient" required>
+
+        <label for="">Department/Office/Address</label>
+        <input type="text" name="department" required>
+        
+        <label for="">Date Received</label>
+        <input type="date" name="dateReceived" required>
+
+        <label for="">Receiving Facilitator</label>
+        <input type="text" name="receivingFacilitator" required>
+
+        <label for="">Document Status</label>
+        <input type="text" name="documentStatus" required>
+
+        <label for="">Return Date</label>
+        <input type="date" name="returnDate" required>
+
+        <label for="">Returning Facilitator</label>
+        <input type="text" name="returningFacilitator" required>
+
+        <label for="">Return Document for</label>
+        <input type="text" name="returnDocumentfor" required>
+
+        <label for="">Receipient's Remarks/Notes</label>
+        <input type="text" name="receipientsRemarks" required>
+
+        <label for="">Returned Document Type</label>
+        <input type="text" name="returnedDocumentType" required>
+
+        <label for="">Returned Docmuent Code</label>
+        <input type="text" name="returnedDocumentCode" required>
+
+        <label for="">Assigned Liaison Officer</label>
+        <input type="text" name="assignedLaisonOfficer2" required>
+
+        <label for="">Document Arrival Date</label>
+        <input type="date" name="documentArrivalDate" required>
+
+        <label for="">Transmittal/Endorsment Processor</label>
+        <input type="text" name="transmittal" required>
+
+        <label for="">Transmittal Date</label>
+        <input type="date" name="transmittalDate" required>
+
+        <label for="">Assigned Liaison Officer</label>
+        <input type="text" name="assignedLaisonOfficer3" required>
+
+        <label for="">Stakeholder's Name</label>
+        <input type="text" name="stakeholderName" required>
+
+        <label for="">Company/Office/Organization</label>
+        <input type="text" name="company" required>
+
+        <label for="">Address</label>
+        <input type="text" name="address" required>
+
+        <label for="">Date Received</label>
+        <input type="date" name="dateReceived" required>
+
+        <label for="">Receiver</label>
+        <input type="text" name="receiver" required>
+
+        <label for="">Feedback Date</label>
+        <input type="date" name="feedbackDate" required>
+
+        <label for="">Feedback Processor</label>
+        <input type="text" name="feedbackProcessor" required>
+
+        <label for="">Feedback Form/Type</label>
+        <input type="text" name="feedbackForm" required>
+
+        <label for="">Document Final Archive History</label>
+        <input type="text" name="documentFinalArchiveHistory" required>
+
+        <label for="">Date Archive</label>
+        <input type="date" name="dateArchived" required>
+
+        <label for="">Archieving Processor</label>
+        <input type="text" name="archievingProcessor" required>
+
+        <label for="">Archieval Code</label>
+        <input type="text" name="archivalCode" required>
+
+        <label for="">File Status</label>
+        <input type="text" name="fileStatus" required>
+
+      <button type="submit">Submit</button>
+      <button type="button" onclick="logout()" style="margin-top: 10px;">Logout</button>
+    </form>
+
+    <div id="previewContainer">
+      <h3 style="text-align: center;">Preview</h3>
+      <div id="previewContent"></div>
+      <br>
+      <button onclick="window.print()">Print</button>
+    </div>
+  </div>
+
+  <script>
+    // Check if user is logged in
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+      alert("You must log in first.");
+      window.location.href = "index.html";
+    } else {
+      document.getElementById("welcomeMsg").textContent = "Welcome, " + user.fullname;
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "index.html";
+    }
+
+    const form = document.getElementById('outgoingForm');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const jsonData = {};
+      formData.forEach((value, key) => jsonData[key] = value);
+
+      // Send data
+      fetch("https://script.google.com/macros/s/AKfycby1rSC5QnmZdyLT2WPxLERxAH16kypgfMKBM3UoahGFbyl5wVFv_D1rjdyAuKtVDReQ5w/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsonData)
+      })
+      .then(() => {
+        alert("Form submitted successfully!");
+
+        // Show preview
+        const previewContainer = document.getElementById('previewContainer');
+        const previewContent = document.getElementById('previewContent');
+        previewContent.innerHTML = Object.entries(jsonData)
+          .map(([key, value]) => `<p><strong>${key.replace(/([A-Z])/g, ' $1')}:</strong> ${value}</p>`)
+          .join("");
+
+        previewContainer.style.display = 'block';
+        form.reset();
+      })
+      .catch(error => {
+        alert("Submission failed.");
+        console.error("Fetch Error:", error);
+      });
+    });
+  </script>
+</body>
+</html>
