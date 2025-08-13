@@ -180,7 +180,7 @@
   </div>
 
   <script>
-    // Check if user is logged in
+
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (!user) {
       alert("You must log in first.");
@@ -202,7 +202,7 @@
       const jsonData = {};
       formData.forEach((value, key) => jsonData[key] = value);
 
-      // Send data
+      
       fetch("https://script.google.com/macros/s/AKfycbxzV9Aqtrb5C_RL21l04HN-mRjJWd6tT-X4cWnEQSRbN_3pJx8GgOJO0XzBSTAD6xGs/exec", {
         method: "POST",
         mode: "no-cors",
